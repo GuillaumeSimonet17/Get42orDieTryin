@@ -56,11 +56,4 @@ class AuthProvider with ChangeNotifier {
       throw Exception("Échec de l'authentification avec 42");
     }
   }
-
-  Future<String> getValidToken() async {
-    if (!isAuthenticated) {
-      throw Exception("L'utilisateur doit s'authentifier");
-    }
-    return _accessToken!;
-  }
 }
