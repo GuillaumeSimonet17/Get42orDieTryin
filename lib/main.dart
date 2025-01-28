@@ -27,24 +27,24 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Color(0xCFCFCF),
+        scaffoldBackgroundColor: Colors.white,
+        // scaffoldBackgroundColor: Color(0xFF003366),
         textTheme: TextTheme(
-          bodyMedium: TextStyle(fontSize: 16, color: Colors.blue.shade900),
+          bodyMedium: TextStyle(fontSize: 16, color: Colors.blue.shade50),
           titleLarge: TextStyle(
-              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue.shade900),
+              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue.shade50),
         ),
         cardTheme: CardTheme(
-          color: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blueAccent,
+            backgroundColor: Color(0X003366),
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
               side: BorderSide(
-                color: Colors.blue.shade900, // Couleur de la bordure
+                color: Colors.blue.shade50, // Couleur de la bordure
                 width: 2, // Largeur de la bordure
               ),
             ),

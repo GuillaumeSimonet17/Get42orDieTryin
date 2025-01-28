@@ -87,15 +87,24 @@ class _ProtectedPageState extends State<ProtectedPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          elevation: 0,
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.white,
+          // Change la couleur ici
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Get 42 or Die Tryin\''), // Titre à gauche
+              Text('Get 42 or Die Tryin\'',
+                  style: TextStyle(
+                    color: Colors.blue.shade900,
+                  )),
               Row(
                 children: [
                   Text(username,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue.shade900)),
                   // Remplace par la variable du nom de l'utilisateur
                   SizedBox(width: 10),
                   // Espace entre le nom et le bouton
@@ -107,14 +116,13 @@ class _ProtectedPageState extends State<ProtectedPage> {
               ),
             ],
           ),
-          backgroundColor: Colors.white,
           bottom: TabBar(
             indicatorColor: Colors.blue.shade900,
             labelColor: Colors.blue.shade900,
-            unselectedLabelColor: Colors.blue.shade600,
+            unselectedLabelColor: Color(0xFF4B67C1),
             tabs: [
               Tab(icon: Icon(Icons.person), text: "Profil"),
-              Tab(icon: Icon(Icons.check), text: "Ranking"),
+              Tab(icon: Icon(Icons.check), text: "Ranking (Lyon)"),
             ],
           ),
         ),
@@ -147,76 +155,107 @@ class _ProtectedPageState extends State<ProtectedPage> {
                         .toList();
 
                     return SingleChildScrollView(
-                      child: Container(
-                        width: 700,
-                        margin: EdgeInsets.only(top: 20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(50),
-                            topRight: Radius.circular(50),
-                          ),
+                        child: Container(
+                      width: 700,
+                      margin: EdgeInsets.only(top: 20),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/background.png'),
+                          fit: BoxFit.cover,
                         ),
-                        child: Column(
+                        // color: Color(0xFF003366),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(50),
+                          topRight: Radius.circular(50),
+                        ),
+                      ),
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(height: 20),
-                          CircleAvatar(
-                            radius: 50,
-                            backgroundImage: NetworkImage(user['image']
-                                ['link']), // Affiche l'image de l'utilisateur
+                          SizedBox(height: 50),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 40),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage: NetworkImage(user['image'][
+                                      'link']), // Affiche l'image de l'utilisateur
+                                ),
+                                SizedBox(width: 40),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${user['first_name']} ${user['last_name']}',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    // Text(
+                                    //   '${user['email']}',
+                                    //   style: TextStyle(fontSize: 16),
+                                    // ),
+                                    SizedBox(height: 20),
+                                    Text(
+                                      'Login: $username',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    Text(
+                                      'Wallet: ${user['wallet']}',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    Text(
+                                      'Level: ${cursus[1]['level']}',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                          SizedBox(height: 20),
-                          Text(
-                            '${user['first_name']} ${user['last_name']}',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '${user['email']}',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(height: 20),
-                          Text(
-                            'Login: $username',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          Text(
-                            'Wallet: ${user['wallet']}',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          Text(
-                            'Level: ${cursus[1]['level']}',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(height: 20),
-                          SizedBox(
-                            height: 300,
-                            child: Padding(
-                              padding: EdgeInsets.all(16.0),
+                          SizedBox(height: 70),
+                          Container(
+                            height: 250,
+                            margin: EdgeInsets.symmetric(horizontal: 50),
+                            // Padding à gauche et à droite
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            // Padding à gauche et à droite
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(50), // Bords arrondis
+                            ),
+                            child: SizedBox(
+                              height: 200,
                               child: RadarChart(
                                 ticks: [5, 10, 15],
                                 features: skillNames,
                                 data: [skillLevels],
                                 sides: skillNames.length,
-                                outlineColor: Colors.blue.shade900,
-                                graphColors: [Colors.blue.shade900],
+                                outlineColor: Color(0xFF4B70AF),
+                                graphColors: [
+                                  Color(0xFF4B70AF),
+                                ],
+                                featuresTextStyle: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
-                          SizedBox(height: 20),
+                          SizedBox(height: 70),
                           Text(
                             '📌 Projets :',
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black),
+                                color: Colors.white),
                           ),
                           SizedBox(height: 20),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: Container(
-                              width: 1000,
+                            child: Expanded(
                               child: Wrap(
                                 spacing: 10,
                                 // Espacement horizontal entre les cartes
@@ -227,42 +266,44 @@ class _ProtectedPageState extends State<ProtectedPage> {
                                   return Container(
                                     width: 180, // Taille des cartes
                                     child: Card(
+                                        color: Color(0xFF455D87),
                                         child: Container(
-                                      height: 180,
-                                      color: Colors.black12,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            SizedBox(height: 5),
-                                            Text(
-                                              project['project']['name'],
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
+                                          height: 150,
+                                          child: Padding(
+                                            padding: EdgeInsets.all(8),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                SizedBox(height: 5),
+                                                Text(
+                                                  project['project']['name'],
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                SizedBox(height: 5),
+                                                Text(
+                                                  '${project['status']}',
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.white),
+                                                ),
+                                                Text(
+                                                  'Validé: ${project['validated?'] == true ? "Oui" : "Non"}',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color:
+                                                        project['validated?'] ==
+                                                                true
+                                                            ? Colors.green
+                                                            : Colors.red,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            SizedBox(height: 5),
-                                            Text(
-                                              '${project['status']}',
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.black),
-                                            ),
-                                            Text(
-                                              'Validé: ${project['validated?'] == true ? "Oui" : "Non"}',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: project['validated?'] ==
-                                                        true
-                                                    ? Colors.green
-                                                    : Colors.red,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    )),
+                                          ),
+                                        )),
                                   );
                                 }).toList(),
                               ),
@@ -291,6 +332,7 @@ class _ProtectedPageState extends State<ProtectedPage> {
                         var data = snapshot.data!;
 
                         return SingleChildScrollView(
+                          padding: EdgeInsets.only(top: 20),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: data.map((userData) {
@@ -300,7 +342,7 @@ class _ProtectedPageState extends State<ProtectedPage> {
                               return Container(
                                   width: 700,
                                   child: Card(
-                                    color: Colors.white,
+                                    color: Color(0xFF455D87),
                                     margin: EdgeInsets.all(8),
                                     elevation: 5,
                                     child: Padding(
@@ -360,12 +402,9 @@ class _ProtectedPageState extends State<ProtectedPage> {
                               : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
-                            // Fond blanc
                             foregroundColor: Colors.black,
-                            // Texte noir
                             padding: EdgeInsets.symmetric(
                                 horizontal: 30, vertical: 15),
-                            // Ajuste la taille du bouton
                             shape: RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.circular(10), // Coins arrondis
@@ -382,7 +421,7 @@ class _ProtectedPageState extends State<ProtectedPage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             // Fond blanc
-                            foregroundColor: Colors.black,
+                            foregroundColor: Color(0xFF003366),
                             // Texte noir
                             padding: EdgeInsets.symmetric(
                                 horizontal: 30, vertical: 15),
