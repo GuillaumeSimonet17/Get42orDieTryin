@@ -14,6 +14,7 @@ dependencies:
     sdk: flutter
   flutter_radar_chart: ^0.2.1
   provider: ^6.0.5
+  flutter_svg: ^1.0.0
   http: ^1.1.0
   flutter_web_auth: ^0.5.0
   flutter_dotenv: ^5.1.0
@@ -33,3 +34,5 @@ flutter:
   uses-material-design: true
   assets:
     - .env
+    - assets/42_Logo.svg
+    - assets/background.png

@@ -7,7 +7,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'protected_page.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,7 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _isLoading = true;
   String? _accessToken;
 
   @override
@@ -33,9 +32,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         _accessToken = storedToken;
       });
-      print('access token in check function = $_accessToken');
 
-      // Redirige immédiatement si le token est trouvé
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -43,17 +40,14 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     }
-
-    // Fin de la vérification, on peut arrêter le chargement
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   void _handleIncomingLinks() async {
     Uri? initialUri = await getInitialUri();
 
-    if (initialUri != null && initialUri.scheme == "http" && initialUri.queryParameters.containsKey("code")) {
+    if (initialUri != null &&
+        initialUri.scheme == "http" &&
+        initialUri.queryParameters.containsKey("code")) {
       String? authCode = initialUri.queryParameters["code"];
 
       if (authCode != null && _accessToken == null) {
@@ -108,7 +102,6 @@ class _HomePageState extends State<HomePage> {
             builder: (context) => ProtectedPage(accessToken: _accessToken!),
           ),
         );
-
       } else {
         print("Erreur lors de l'échange du code: ${response.body}");
       }
@@ -133,30 +126,28 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Afficher un écran de chargement jusqu'à ce que le token soit vérifié
-    if (_isLoading) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text("Login 42"),
-          backgroundColor: Colors.blue,
-        ),
-        body: Center(child: CircularProgressIndicator()), // Afficher un spinner pendant la vérification
-      );
-    }
-    else {
-      // Une fois que la vérification est terminée, afficher le contenu
-      return Scaffold(
-          appBar: AppBar(
-            title: Text("Login 42"),
-            backgroundColor: Colors.blue,
-          ),
-          body: Center(
-            child: ElevatedButton(
-              onPressed: _launchAuthUrl,
-              child: Text("Se connecter avec 42"),
+    return Scaffold(
+        body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/background.png'),
+                fit: BoxFit.cover,
+              ),
             ),
-          )
-      );
-    }
+            child: Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                  SvgPicture.asset(
+                    'assets/42_Logo.svg',
+                    height: 200,
+                    color: Colors.white,
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _launchAuthUrl,
+                    child: Text("Se connecter avec 42"),
+                  ),
+                ]))));
   }
 }
