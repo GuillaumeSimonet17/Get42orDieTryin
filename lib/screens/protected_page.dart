@@ -17,6 +17,14 @@ class ProtectedPage extends StatefulWidget {
 
 class _ProtectedPageState extends State<ProtectedPage> {
   int currentPage = 1;
+  String username = '';
+  late Future<Map<String, dynamic>> userDataFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    userDataFuture = fetchUserData();
+  }
 
   Future logout() async {
     final prefs = await SharedPreferences.getInstance();
@@ -35,12 +43,16 @@ class _ProtectedPageState extends State<ProtectedPage> {
         headers: {'Authorization': 'Bearer ${widget.accessToken}'},
       );
       if (userResponse.statusCode == 200) {
-        return json.decode(userResponse.body);
+        final data = json.decode(userResponse.body);
+        setState(() {
+          username = data['login'] ?? 'Inconnu';
+        });
+        return data;
       } else {
         throw Exception("Failed to load user data: ${userResponse.statusCode}");
       }
     } catch (e) {
-      await logout();
+      // await logout();
       rethrow;
     }
   }
@@ -75,7 +87,26 @@ class _ProtectedPageState extends State<ProtectedPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Get 42 or Die Tryin\''),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Get 42 or Die Tryin\''), // Titre à gauche
+              Row(
+                children: [
+                  Text(username,
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  // Remplace par la variable du nom de l'utilisateur
+                  SizedBox(width: 10),
+                  // Espace entre le nom et le bouton
+                  IconButton(
+                    icon: Icon(Icons.logout, color: Colors.blue.shade900),
+                    onPressed: logout,
+                  ),
+                ],
+              ),
+            ],
+          ),
           backgroundColor: Colors.white,
           bottom: TabBar(
             indicatorColor: Colors.blue.shade900,
@@ -91,7 +122,7 @@ class _ProtectedPageState extends State<ProtectedPage> {
           children: [
             Center(
               child: FutureBuilder<Map<String, dynamic>>(
-                future: fetchUserData(),
+                future: userDataFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator(); // Affiche un loader pendant le chargement
@@ -99,7 +130,6 @@ class _ProtectedPageState extends State<ProtectedPage> {
                     return Text('Unknown user');
                   } else if (snapshot.hasData) {
                     final user = snapshot.data!; // Les données utilisateur
-
                     List<dynamic> cursus = user['cursus_users'];
                     List<dynamic> projects = user['projects_users'];
 
@@ -117,7 +147,17 @@ class _ProtectedPageState extends State<ProtectedPage> {
                         .toList();
 
                     return SingleChildScrollView(
-                      child: Column(
+                      child: Container(
+                        width: 700,
+                        margin: EdgeInsets.only(top: 20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(50),
+                            topRight: Radius.circular(50),
+                          ),
+                        ),
+                        child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(height: 20),
@@ -138,7 +178,7 @@ class _ProtectedPageState extends State<ProtectedPage> {
                           ),
                           SizedBox(height: 20),
                           Text(
-                            'Login: ${user['login']}',
+                            'Login: $username',
                             style: TextStyle(fontSize: 16),
                           ),
                           Text(
@@ -151,7 +191,7 @@ class _ProtectedPageState extends State<ProtectedPage> {
                           ),
                           SizedBox(height: 20),
                           SizedBox(
-                            height: 400,
+                            height: 300,
                             child: Padding(
                               padding: EdgeInsets.all(16.0),
                               child: RadarChart(
@@ -189,6 +229,7 @@ class _ProtectedPageState extends State<ProtectedPage> {
                                     child: Card(
                                         child: Container(
                                       height: 180,
+                                      color: Colors.black12,
                                       child: Padding(
                                         padding: EdgeInsets.all(8),
                                         child: Column(
@@ -229,7 +270,7 @@ class _ProtectedPageState extends State<ProtectedPage> {
                           ),
                         ],
                       ),
-                    );
+                    ));
                   } else {
                     return Text("Aucune donnée disponible");
                   }
@@ -257,7 +298,7 @@ class _ProtectedPageState extends State<ProtectedPage> {
                               var level = userData['level'];
 
                               return Container(
-                                  width: 600,
+                                  width: 700,
                                   child: Card(
                                     color: Colors.white,
                                     margin: EdgeInsets.all(8),
@@ -305,7 +346,7 @@ class _ProtectedPageState extends State<ProtectedPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    width: 600,
+                    width: 700,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -317,6 +358,19 @@ class _ProtectedPageState extends State<ProtectedPage> {
                                   });
                                 }
                               : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            // Fond blanc
+                            foregroundColor: Colors.black,
+                            // Texte noir
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 30, vertical: 15),
+                            // Ajuste la taille du bouton
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(10), // Coins arrondis
+                            ),
+                          ),
                           child: Text("Précédent"),
                         ),
                         ElevatedButton(
@@ -325,6 +379,19 @@ class _ProtectedPageState extends State<ProtectedPage> {
                               currentPage++;
                             });
                           },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            // Fond blanc
+                            foregroundColor: Colors.black,
+                            // Texte noir
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 30, vertical: 15),
+                            // Ajuste la taille du bouton
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(10), // Coins arrondis
+                            ),
+                          ),
                           child: Text("Suivant"),
                         ),
                       ],
@@ -334,12 +401,6 @@ class _ProtectedPageState extends State<ProtectedPage> {
               ],
             ),
           ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: logout,
-          tooltip: 'Logout',
-          backgroundColor: Colors.blue,
-          child: const Icon(Icons.logout),
         ),
       ),
     );

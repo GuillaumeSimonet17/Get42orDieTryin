@@ -138,15 +138,23 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _launchAuthUrl,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white, // Fond blanc
+                        foregroundColor: Colors.black, // Texte noir
+                        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15), // Ajuste la taille du bouton
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10), // Coins arrondis
+                        ),
+                      ),
+                        child: Text("Se connecter avec 42"),
+                  ),
                   SvgPicture.asset(
                     'assets/42_Logo.svg',
                     height: 200,
                     color: Colors.white,
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _launchAuthUrl,
-                    child: Text("Se connecter avec 42"),
                   ),
                 ]))));
   }
