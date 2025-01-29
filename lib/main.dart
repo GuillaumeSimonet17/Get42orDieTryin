@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:provider/provider.dart'; // Import provider here
 import 'screens/login_screen.dart';
 import 'screens/home/home_screen.dart';
-import 'providers/auth_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -11,10 +9,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final accessToken = prefs.getString('access_token');
-
-  const Color primaryColor = Color(0xFF0C3E54);
-  const Color secondaryColor = Color(0XFF366553);
-  const Color thirdColor = Color(0XFF576A54);
 
   runApp(
     MyApp(accessToken: accessToken),
