@@ -52,7 +52,7 @@ class _ProtectedPageState extends State<ProtectedPage> {
         throw Exception("Failed to load user data: ${userResponse.statusCode}");
       }
     } catch (e) {
-      // await logout();
+      await logout();
       rethrow;
     }
   }
@@ -96,7 +96,7 @@ class _ProtectedPageState extends State<ProtectedPage> {
             children: [
               Text('Get 42 or Die Tryin\'',
                   style: TextStyle(
-                    color: Colors.blue.shade900,
+                    color: Theme.of(context).colorScheme.primary,
                   )),
               Row(
                 children: [
@@ -104,12 +104,13 @@ class _ProtectedPageState extends State<ProtectedPage> {
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue.shade900)),
+                          color: Theme.of(context).colorScheme.primary)),
                   // Remplace par la variable du nom de l'utilisateur
                   SizedBox(width: 10),
                   // Espace entre le nom et le bouton
                   IconButton(
-                    icon: Icon(Icons.logout, color: Colors.blue.shade900),
+                    icon: Icon(Icons.logout,
+                        color: Theme.of(context).colorScheme.primary),
                     onPressed: logout,
                   ),
                 ],
@@ -117,9 +118,9 @@ class _ProtectedPageState extends State<ProtectedPage> {
             ],
           ),
           bottom: TabBar(
-            indicatorColor: Colors.blue.shade900,
-            labelColor: Colors.blue.shade900,
-            unselectedLabelColor: Color(0xFF4B67C1),
+            indicatorColor: Theme.of(context).colorScheme.primary,
+            labelColor: Theme.of(context).colorScheme.primary,
+            unselectedLabelColor: Theme.of(context).colorScheme.secondary,
             tabs: [
               Tab(icon: Icon(Icons.person), text: "Profil"),
               Tab(icon: Icon(Icons.check), text: "Ranking (Lyon)"),
@@ -342,10 +343,23 @@ class _ProtectedPageState extends State<ProtectedPage> {
                               return Container(
                                   width: 700,
                                   child: Card(
-                                    color: Color(0xFF455D87),
                                     margin: EdgeInsets.all(8),
                                     elevation: 5,
-                                    child: Padding(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12), // Arrondi les coins de la Card
+                                    ),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12), // Assure l'arrondi du dégradé
+                                        gradient: LinearGradient(
+                                          begin: Alignment.centerLeft, // Dégradé horizontal (de gauche à droite)
+                                          end: Alignment.centerRight,
+                                          colors: [
+                                            Theme.of(context).colorScheme.primary,
+                                            Theme.of(context).colorScheme.secondary,
+                                          ],
+                                        ),
+                                      ),
                                       padding: EdgeInsets.all(12),
                                       child: Row(
                                         children: [

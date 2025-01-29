@@ -12,6 +12,10 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   final accessToken = prefs.getString('access_token');
 
+  const Color primaryColor = Color(0xFF0C3E54);
+  const Color secondaryColor = Color(0XFF366553);
+  const Color thirdColor = Color(0XFF576A54);
+
   runApp(
     MyApp(accessToken: accessToken),
   );
@@ -26,6 +30,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        colorScheme: ColorScheme.light(
+          primary: Color(0xFF0C3E54), // Utilise la variable définie
+          secondary: Color(0XFF366553),
+        ),
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
         // scaffoldBackgroundColor: Color(0xFF003366),
