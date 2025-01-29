@@ -23,12 +23,11 @@ class _HomeScreenState extends State<HomeScreen> {
   String username = '';
   late Future<Map<String, dynamic>> userDataFuture;
 
-
   @override
   void initState() {
     super.initState();
     userDataFuture = fetchUserData();
-  }
+    }
 
 
   Future<Map<String, dynamic>> fetchUserData() async {
@@ -37,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Uri.parse('https://api.intra.42.fr/v2/me'),
         headers: {'Authorization': 'Bearer ${widget.accessToken}'},
       );
+
       if (userResponse.statusCode == 200) {
         final data = json.decode(userResponse.body);
         setState(() {
@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       final response = await http.get(
         Uri.parse(
-            'https://api.intra.42.fr/v2/cursus_users?filter[campus_id]=9&sort=-level&page[size]=9&page[number]=$page'),
+            'https://api.intra.42.fr/v2/cursus_users?filter[cursus_id]=21&filter[campus_id]=9&sort=-level&page[size]=9&page[number]=$page'),
         headers: {'Authorization': 'Bearer ${widget.accessToken}'},
       );
 
@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
             unselectedLabelColor: Theme.of(context).colorScheme.secondary,
             tabs: [
               Tab(icon: Icon(Icons.person), text: "Profil"),
-              Tab(icon: Icon(Icons.check), text: "Ranking (Lyon)"),
+              Tab(icon: Icon(Icons.check), text: "Ranking"),
             ],
           ),
         ),
@@ -114,13 +114,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 future: userDataFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator(); // Affiche un loader pendant le chargement
+                    return CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Unknown user');
                   } else if (snapshot.hasData) {
-                    final user = snapshot.data!; // Les données utilisateur
+                    final user = snapshot.data!;
                     List<dynamic> cursus = user['cursus_users'];
                     List<dynamic> projects = user['projects_users'];
+
                     List<dynamic> skillsData =
                         cursus.isNotEmpty && cursus[1] != null
                             ? cursus[1]['skills']
@@ -182,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       } else if (snapshot.hasData) {
                         List<Map<String, dynamic>> data = snapshot.data!;
 
-                        return ProfilesList(data: data);
+                        return ProfilesList(currentPage:currentPage, data: data);
                       } else {
                         return Center(child: Text('Aucune donnée disponible'));
                       }

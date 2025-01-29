@@ -3,8 +3,13 @@ import 'package:flutter/rendering.dart';
 
 class ProfilesList extends StatefulWidget {
   final List<Map<String, dynamic>> data;
+  final int currentPage;
 
-  const ProfilesList({Key? key, required this.data}) : super(key: key);
+  const ProfilesList({
+    Key? key,
+    required this.data,
+    required this.currentPage
+  }) : super(key: key);
 
   @override
   _ProfilesListState createState() => _ProfilesListState();
@@ -22,12 +27,22 @@ class _ProfilesListState extends State<ProfilesList> {
       padding: EdgeInsets.only(top: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: widget.data.map((userData) {
-          var user = userData['user'];
-          var level = userData['level'];
+        children: widget.data
+            .asMap()
+            .map((index, userData) {
+              return MapEntry(index, userData);
+            })
+            .entries
+            .map((entry) {
+              int idx = entry.key + ((widget.currentPage - 1) * 9);
+              String index = idx.toString();
+              var userData = entry.value;
+              var user = userData['user'] ?? 'null';
+              var level = userData['level'] ?? 'null';
 
-          return ProfileCard(user: user, level: level);
-        }).toList(),
+              return ProfileCard(index: index, user: user, level: level);
+            })
+            .toList(),
       ),
     );
   }
@@ -36,9 +51,11 @@ class _ProfilesListState extends State<ProfilesList> {
 class ProfileCard extends StatefulWidget {
   final user;
   final level;
+  final index;
 
   const ProfileCard({
     Key? key,
+    required this.index,
     required this.user,
     required this.level,
   }) : super(key: key);
@@ -61,16 +78,13 @@ class _ProfileCardState extends State<ProfileCard> {
           margin: EdgeInsets.all(8),
           elevation: 5,
           shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(12), // Arrondi les coins de la Card
+            borderRadius: BorderRadius.circular(12),
           ),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              // Assure l'arrondi du dégradé
               gradient: LinearGradient(
                 begin: Alignment.centerLeft,
-                // Dégradé horizontal (de gauche à droite)
                 end: Alignment.centerRight,
                 colors: [
                   Theme.of(context).colorScheme.primary,
@@ -81,6 +95,8 @@ class _ProfileCardState extends State<ProfileCard> {
             padding: EdgeInsets.all(12),
             child: Row(
               children: [
+                Text(widget.index),
+                SizedBox(width: 12),
                 ClipOval(
                   child: Image.network(
                     widget.user['image']['link'],

@@ -39,14 +39,17 @@ class _ProjectsListState extends State<ProjectsList> {
             alignment: WrapAlignment.center,
             children: widget.projects.map((project) {
               return Container(
+
                 width: 180, // Taille des cartes
                 child: Card(
                     color: Color(0xFF455D87),
                     child: Container(
-                      height: 150,
+                      height: 165,
                       child: Padding(
                         padding: EdgeInsets.all(8),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             SizedBox(height: 5),
@@ -61,13 +64,20 @@ class _ProjectsListState extends State<ProjectsList> {
                               style:
                                   TextStyle(fontSize: 14, color: Colors.white),
                             ),
-                            Text(
-                              'Validé: ${project['validated?'] == true ? "Oui" : "Non"}',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: project['validated?'] == true
-                                    ? Colors.green
-                                    : Colors.red,
+                            SizedBox(height: 10),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: project['validated?'] == true ? Colors.green : Colors.red,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Text(
+                                project['final_mark'] != null ? '${project['final_mark']}' : 'Non rendu',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white, // Pour assurer un bon contraste avec le fond
+                                ),
                               ),
                             ),
                           ],
