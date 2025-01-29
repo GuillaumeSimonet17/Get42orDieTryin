@@ -6,15 +6,15 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'protected_page.dart';
+import 'home/home_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class HomePage extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _LoginScreenState extends State<LoginScreen> {
   String? _accessToken;
 
   @override
@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => ProtectedPage(accessToken: _accessToken!),
+          builder: (context) => HomeScreen(accessToken: _accessToken!),
         ),
       );
     }
@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProtectedPage(accessToken: _accessToken!),
+            builder: (context) => HomeScreen(accessToken: _accessToken!),
           ),
         );
       } else {

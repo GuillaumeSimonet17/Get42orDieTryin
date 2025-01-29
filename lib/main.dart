@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart'; // Import provider here
-import 'screens/home_screen.dart';
-import 'screens/protected_page.dart';
+import 'screens/login_screen.dart';
+import 'screens/home/home_screen.dart';
 import 'providers/auth_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -60,8 +60,8 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: accessToken != null
-          ? ProtectedPage(accessToken: accessToken!)
-          : HomePage(),
+          ? HomeScreen(accessToken: accessToken!)
+          : LoginScreen(),
     );
   }
 }
