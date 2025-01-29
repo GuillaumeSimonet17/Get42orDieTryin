@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        colorScheme: ColorScheme.light(
+        colorScheme: const ColorScheme.light(
           primary: Color(0xFF0C3E54), // Utilise la variable définie
           secondary: Color(0XFF366553),
         ),
@@ -41,13 +41,12 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0X003366),
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
               side: BorderSide(
-                color: Colors.blue.shade50, // Couleur de la bordure
-                width: 2, // Largeur de la bordure
+                color: Colors.blue.shade50,
+                width: 2,
               ),
             ),
           ),
