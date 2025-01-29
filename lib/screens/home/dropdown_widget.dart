@@ -75,10 +75,14 @@ class _DropdownWidgetState extends State<DropdownWidget> {
             }
           });
         },
-        buttonStyleData: const ButtonStyleData(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          height: 40,
-          width: 140,
+        buttonStyleData: ButtonStyleData(
+          height: 50,
+          width: 130,
+          padding: const EdgeInsets.only(left: 14, right: 14),
+          decoration: BoxDecoration(
+            color: Colors.white,
+          ),
+          elevation: 0,
         ),
         menuItemStyleData: const MenuItemStyleData(
           height: 40,
